@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>CTF - Hacknight</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', path='/memory_challenge.css') }}">
+    <link rel="icon" type="image/svg" href="{{ url_for('static', path='/src/img/loading.svg')}}" />
+
+
+</head>
+
+<body>
+    <div class="timer-sec">
+        <p>Timer:</p>
+        <h1 id="count">00:30</h1>
+    </div>
+
+    <div class="game-sec">
+
+        <h2 id="challenge-text">Memory-Puzzle</h2>
+
+        <p id="hint-text"> 
+            Here solve the given puzzle ,its based on color memory <br>
+            and you need to complete it in 30 seconds ,if not then <br> puzzle
+            will be automatically shuffled.
+        </p>
+
+        <div class="play-arena">
+            <div class="row">
+                <div class="card color-hidden" onclick="showColor(event)"></div>
+                <div class="card color-hidden" onclick="showColor(event)"></div>
+                <div class="card color-hidden" onclick="showColor(event)"></div>
+                <div class="card color-hidden" onclick="showColor(event)"></div>
+            </div>
+            <div class="row">
+                <div class="card color-hidden" onclick="showColor(event)"></div>
+                <div class="card color-hidden" onclick="showColor(event)"></div>
+                <div class="card color-hidden" onclick="showColor(event)"></div>
+                <div class="card color-hidden" onclick="showColor(event)"></div>
+            </div>
+            <div class="row">
+                <div class="card color-hidden" onclick="showColor(event)"></div>
+                <div class="card color-hidden" onclick="showColor(event)"></div>
+                <div class="card color-hidden" onclick="showColor(event)"></div>
+                <div class="card color-hidden" onclick="showColor(event)"></div>
+            </div>
+            <div class="row">
+                <div class="card color-hidden" onclick="showColor(event)"></div>
+                <div class="card color-hidden" onclick="showColor(event)"></div>
+                <div class="card color-hidden" onclick="showColor(event)"></div>
+                <div class="card color-hidden" onclick="showColor(event)"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="results">
+        
+    </div>
+
+    <script>
+        //Timer 
+        let mcount = 00;
+        let scount = 30;
+        let gameloop = setInterval(function(){
+            scount--;
+            if(scount>=0){
+                const id = document.getElementById('count');
+                id.innerHTML = `${mcount}:${scount}`;
+            }
+            if(scount==0){
+                location.reload();
+            }
+        },1000);
+
+        let clickCard = null;
+        let preventClick = false;
+        let colorMatch = 0;
+
+        const colors = [
+            'red',
+            'yellow',
+            'salmon',
+            'spring',
+            'orange',
+            'green',
+            'purple',
+            'teal'
+        ];
+
+        //this is done to remove the hard coded color in class section in html
+        const cards = [...document.querySelectorAll('.card')];
+        for (let color of colors) {
+            const cardAIndex = parseInt(Math.random() * cards.length);
+            const cardA = cards[cardAIndex];
+            cards.splice(cardAIndex, 1);
+            cardA.className += `${color}`;
+            cardA.setAttribute('data-color', color);
+
+            const cardBIndex = parseInt(Math.random() * cards.length);
+            const cardB = cards[cardBIndex];
+            cards.splice(cardBIndex, 1);
+            cardB.className += `${color}`;
+            cardB.setAttribute('data-color', color);
+        }
+
+
+        function showColor(e) {
+            const target = e.currentTarget;
+
+            if (preventClick || target === clickCard || target.className.includes('done')) {
+                return;
+            }
+
+            target.className = target.className.replace('color-hidden', '').trim();
+
+            console.log(target.getAttribute('data-color'));
+
+            target.className += ' done';
+
+            if (!clickCard) {
+                clickCard = target;
+            }
+            else if (clickCard) {
+                //when the particular card is not selected 
+                if (clickCard.getAttribute('data-color') !== target.getAttribute('data-color')) {
+                    preventClick = true;
+                    console.log("color are not equal");
+                    setTimeout(() => {
+                        clickCard.className = clickCard.className.replace('done', '').trim() + ' color-hidden';
+                        target.className = target.className.replace('done', '').trim() + ' color-hidden';
+                        clickCard = null;
+                        preventClick = false;
+                    }, 500);
+                } else {
+                    clickCard = null;
+                    colorMatch++;
+                    if (colorMatch === 8) {
+                        let res = document.getElementById("results")
+                        res.innerHTML = `<h2>POG! POG! Next challenge at: <a href="https://ctf-hacknight.deta.dev/challenge/language" >https://ctf-hacknight.deta.dev/challenge/language</a>
+</h2>`
+    clearInterval(gameloop);
+                    }
+                }
+
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>CTF - Hacknight</title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="{{ url_for('static', path='/love_challenge.css') }}">
+        <link rel="icon" type="image/svg" href="{{ url_for('static', path='/src/img/loading.svg')}}" />
+
+
+
+    </head>
+
+    <body>
+        <p id="challenge-text"> What is this? 💚 </p>
+        <!-- """                           #
+                          ###
+                        I don't
+                    make sense like
+               this, maybe upside down I
+           do. But it's hard to make me upside
+        down. So maybe look through my source so I
+    make sense now. Oh now I make sense, but what do"""
+vowel = "aeiou" #### I mean? What is life? Can you Compute?
+name = "ilovehacktoberfest<3" ### all I know is my love for
+for i in name: # consonants in the lexicon and binary 0 & 1
+    if i not in vowel: # i   now have no words, seriously
+        print(i, end="")        # I'm no poet. :P -->
+
+
+        <div id="code-snippet">
+            <code id="myInput"><pre>        print(i, end="")        # I'm no poet. :P
+    if i not in vowel: # i   now have no words, seriously
+for i in name: # consonants in the lexicon and binary 0 & 1
+name = "ilovehacktoberfest<3" ### all I know is my love for
+vowel = "aeiou" #### I mean? What is life? Can you Compute?
+    make sense now. Oh now I make sense, but what do"""
+        down. So maybe look through my source so I
+           do. But it's hard to make me upside
+               this, maybe upside down I
+                    make sense like
+                        I don't
+                          ###
+                           #
+<span style="display: none;">"""<span>
+</pre></code>
+            <div class="tooltip">
+                <button id="clipboard-button" onclick="copyToClip()" onmouseout="copiedToClip()">
+                    <span class="tooltiptext" id="myTooltip">Copy to clipboard</span>
+                    <img id="clipboard-icon" src="{{ url_for('static', path='./src/vectors/clipboards.png')}}">
+                </button>
+            </div>
+
+        </div>
+
+        <div id="form">
+            <input class="inpBox" placeholder="Maybe execute?" id="execute" type="text" name="execute">
+
+            <button class="inpBox" id="check-button" onclick="check()"> Check! </button>
+        </div>
+
+        <div id="result">
+
+        </div>
+
+        <script>
+            const copyToClip = () => {
+                var copyText = document.getElementById("myInput");
+                navigator.clipboard.writeText(copyText.innerText  + '\n"""');
+                var tooltip = document.getElementById("myTooltip");
+                tooltip.innerHTML = "Copied to clipboard";
+            }
+
+            const copiedToClip = () => {
+                var tooltip = document.getElementById("myTooltip");
+                tooltip.innerHTML = "Copy to clipboard";
+            }
+
+            const check = () => {
+                // api to check answers
+                const val = document.getElementById("execute").value;
+                const checkAPI = '';
+                // console.log(langName, langOp);
+                // fetch()
+                const res = { result: "success", nextHint: "next-url" };
+                const result = document.getElementById("result");
+
+                fetch(`https://ctf-hacknight.deta.dev/check/love/?msg=${val}`).then(res => res.json()).then(data => {
+                    if (data["res"]) {
+                        let ansSlot = document.getElementById("result")
+                        ansSlot.innerHTML = `<h2>POG! POG! Next challenge at: ${data["res"]}</h2>`
+                    }
+                    else {
+                        let ansSlot = document.getElementById("result")
+                        ansSlot.innerHTML = `<h2>${data["data"]}</h2>`
+                    }
+                })
+
+            }
+        </script>
+    </body>
+
+</html>

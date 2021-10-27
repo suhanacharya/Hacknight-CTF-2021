@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="{{ url_for('static', path='/language_challenge.css') }}">
+        <title>CTF - Hacknight</title>
+        <link rel="icon" type="image/svg" href="{{ url_for('static', path='/src/img/loading.svg')}}" />
+
+    </head>
+
+    <body>
+        <p id="challenge-text">
+            What is Language is this beautiful piece of code written in? And what is it's output?</p>
+        <p id="hint-text">
+            Hint: It is the first line of code you'll ever excute while learning any programming language(But... what
+            f'd up language is this? Have you tried google? :P)</p>
+
+        <div id="code-snippet">
+            <code id="myInput">+[-[<<[+[--->]-[<<<]]]>>>-]>-.---.>..>.<<<<-.<+.>>>>>.>.<<.<-.</code>
+            <div class="tooltip">
+                <button id="clipboard-button" onclick="copyToClip()" onmouseout="copiedToClip()">
+                    <span class="tooltiptext" id="myTooltip">Copy to clipboard</span>
+                    <img id="clipboard-icon" src="{{ url_for('static', path='./src/vectors/clipboards.png')}}">
+                </button>
+            </div>
+
+        </div>
+
+        <div id="form">
+            <input class="inpBox" placeholder="Language Name" id="lang-name" type="text" name="lang-name">
+
+            <input class="inpBox" placeholder="Snippet output" id="lang-op" type="text" name="lang-op">
+
+            <button class="inpBox" id="check-button" onclick="check()"> Check! </button>
+        </div>
+
+        <div id="result">
+            <img id="loading" src="{{ url_for('static', path='/src/img/loading.svg' )}}" alt="loading">
+        </div>
+
+        <script>
+            const copyToClip = () => {
+                var copyText = document.getElementById("myInput");
+                navigator.clipboard.writeText(copyText.innerText);
+                var tooltip = document.getElementById("myTooltip");
+                tooltip.innerHTML = "Copied to clipboard";
+            }
+
+            const copiedToClip = () => {
+                var tooltip = document.getElementById("myTooltip");
+                tooltip.innerHTML = "Copy to clipboard";
+            }
+
+            const check = () => {
+                // api to check answers
+                const langName = document.getElementById("lang-name").value;
+                const langOp = document.getElementById("lang-op").value;
+                const checkAPI = '';
+
+                let loading = document.getElementById("loading");
+                loading.style.display = 'block';
+
+                fetch(`https://ctf-hacknight.deta.dev/check/language/?lang=${langName}&langop=${langOp}`).then(res => res.json()).then(data => {
+                    if (data["res"]) {
+                        let ansSlot = document.getElementById("result")
+                        ansSlot.innerHTML = `<h2>POG! POG! Next challenge at: <a href="${data["res"]}" > ${data["res"]} </a></h2>`
+                    }
+                    else {
+                        let ansSlot = document.getElementById("result")
+                        ansSlot.innerHTML = `<h2>${data["data"]}</h2>`
+                    }
+                })
+
+            }
+        </script>
+    </body>
+
+</html>

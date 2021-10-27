@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{{ url_for('static', path='/difference_challenge.css') }}">
+        <link rel="icon" type="image/svg" href="{{ url_for('static', path='/src/img/loading.svg')}}" />
+
+        <title>CTF - Hacknight</title>
+
+    </head>
+
+    <body>
+        <!-- <a class="main-title" href="../lvl1-home.html">Welcome to CTF</a> -->
+        <p>
+            <!-- Haahaa , link is not here LOL! -->
+        </p>
+
+        <h2 id="challenge-text">Spot the Difference</h2>
+        <p id="hint-text"> Note: In the below options it includes both right and wrong options so observe the image and
+            select it.</p>
+
+        <div class="img-sec">
+            <img src="{{ url_for('static', path='/src/challenge/img1.jpg') }}" alt="">
+            
+            <img src="{{ url_for('static', path='/src/challenge/img2.jpg') }}" alt="">
+        </div>
+
+
+        <div id="options">
+
+            <div>
+
+                <div class="option">
+                    <input type="checkbox" class="checkbox" name="frog-hat"  value="frog-hat">
+                    <label for="frog-hat"> frog-hat</label>
+                </div>
+    
+                <div class="option">
+                    <input type="checkbox" class="checkbox" name="stars" value="stars">
+                    <label for="stars">Stars</label>
+                </div>
+    
+                <div class="option">
+                    <input type="checkbox" class="checkbox" name="ghost-hat" id="" value="ghost-hat">
+                    <label for="ghost-hat">ghost-hat</label>
+                </div>
+    
+                <div class="option">
+                    <input type="checkbox" class="checkbox" name="zombie-eyes" value="zombie-eyes">
+                    <label for="zombie-eyes">zombie-eyes</label>
+                </div>
+    
+                <div class="option">
+                    <input type="checkbox" class="checkbox" name="pot" value="pot">
+                    <label for="pot">pot</label>
+                </div>
+    
+                <div class="option">
+                    <input type="checkbox" class="checkbox" name="windows" value="windows">
+                    <label for="windows">windows</label>
+                </div>
+                
+                <div class="option">
+                    <input type="checkbox" class="checkbox" name="spider" value="spider">
+                    <label for="spider">spider</label>
+    
+                </div>
+                <div class="option">
+                    <input type="checkbox" class="checkbox" name="mushroom" value="mushroom">
+                    <label for="mushroom">mushroom</label>
+    
+                </div>
+            </div>
+
+            <div>
+
+                <div class="option">
+                    <input type="checkbox" class="checkbox" name="teeth" value="vampire-teeth">
+                    <label for="vampire-teeth">vampire-teeth</label>
+    
+                </div>
+                <div class="option">
+                    <input type="checkbox" class="checkbox" name="spell" value="spell-bubble">
+                    <label for="spell-bubble"> spell-bubble</label>
+    
+                </div>
+    
+                <div class="option">
+                    <input type="checkbox" class="checkbox" name="bats" value="bats">
+                    <label for="bats"> bats</label>
+    
+                </div>
+                <div class="option">
+                    <input type="checkbox" class="checkbox" name="old" value="old-man-stick">
+                    <label for="old-man-stick"> old-man-stick</label>
+    
+                </div>
+                <div class="option">
+                    <input type="checkbox" class="checkbox" name="bone"  value="bone">
+                    <label for="bone"> bone</label>
+    
+                </div>
+                <div class="option">
+                    <input type="checkbox" class="checkbox" name="clouds"  value="clouds">
+                    <label for="clouds"> clouds</label>
+    
+                </div>
+                <div class="option">
+                    <input type="checkbox" class="checkbox" name="swirly"  value="swirly">
+                    <label for="swirly"> swirly</label>
+    
+                </div>
+                <div class="option">
+                    <input type="checkbox" class="checkbox" name="sky" value="sky">
+                    <label for="sky"> sky</label>
+                </div>
+            </div>
+
+        </div>
+
+        <button class="inpBox" id="ans-btn" onclick="checkResult()">Check result</button>
+
+        <div id="results">
+
+        </div>
+
+        <script type="text/javascript">
+
+            function checkResult() {
+                const valList = ['frog-hat', 'ghost-hat', 'mushroom', 'spell-bubble', 'spider', 'bats', 'old-man-stick', 'bone', 'swirly', 'windows'];
+
+                let form = document.getElementById("options")
+                for (i = 0; i < valList.len; i++) {
+
+                }
+                let count = 0;
+                const val = document.getElementsByClassName('checkbox')
+                const options = []
+                for (let i = 0; i < 16; i++) {
+                    if (val[i].checked == true) {
+                        if (valList.includes(val[i].value)) {
+                            count++;
+                        }
+                        else {
+                            count--;
+                        }
+                    }
+                }
+
+                if (count == 10) {
+                    let res = document.getElementById("results")
+                    res.innerHTML = 
+                    `<h2>POG! POG! Next challenge at: <a href="https://ctf-hacknight.deta.dev/challenge/memory">https://ctf-hacknight.deta.dev/challenge/memory</a></h2>`
+                } else {
+                    let res = document.getElementById("results")
+                    res.innerHTML = "<h2>Sorry, you didnt get all</h2>"
+                }
+            }
+
+
+
+        </script>
+    </body>
+
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="{{ url_for('static', path='/rps_challenge.css') }}" />
+    <title>CTF - Hacknight</title>
+    <link rel="icon" type="image/svg" href="{{ url_for('static', path='/src/img/loading.svg')}}" />
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="scoreboard"> 
+          <div class="title">
+              
+          </div>
+          <div class="score">
+              <p>SCORE</p>
+              <h1> 0 </h1>
+          </div>
+      </div>
+      <div class="hands">
+            <div class="hand paper">
+              <img src="{{ url_for('static', path='/src/challenge/document.png')}}" onclick="pickUserHand('paper')"/>
+            </div>
+            <div class="hand scissors">
+              <img src="{{ url_for('static', path='/src/challenge/scissors.png')}}" onclick="pickUserHand('scissors')"/>
+            </div>
+            <div class="hand rock">
+              <img src="{{ url_for('static', path='/src/challenge/stone.png')}}" onclick="pickUserHand('rock')"/>                        
+            </div>
+      </div>
+      <div class="contest">       
+        <div class="userhand">
+            <h1>YOU PICKED</h1>
+            <div class="handImageContainer">
+              <img id="userPickImage" src="{{ url_for('static', path='/src/challenge/document.png')}}">
+            </div>
+        </div>
+        <div class="referee"> 
+            <div class="decision"><h1> YOU WIN! </h1> </div>
+
+            <div class="newGame" onclick="restartGame()">PLAY AGAIN</div>
+        </div>
+        <div class="computerhand">
+            <h1>THE HOUSE PICKED</h1>
+            <div class="handImageContainer">
+              <img id="computerPickImage" src="{{ url_for('static', path='/src/challenge/document.png')}}" /> 
+            </div>   
+        </div>       
+      </div>        
+      <div id="challenge-text">It's all random(Or is it?), but secure a Score of 10 Points</div>
+        <div id="result">
+        
+        </div>
+    </div>
+
+    <!-- <script src="index.js"></script> -->
+    <script>
+        const handOptions = {
+                "rock": "{{ url_for('static', path='/src/challenge/stone.png') }}",
+                "paper": "{{ url_for('static', path='/src/challenge/document.png') }}",
+                "scissors": "{{ url_for('static', path='/src/challenge/scissors.png') }}"
+            }
+
+            let SCORE = 0;
+
+            const pickUserHand = (hand) => {
+                let hands = document.querySelector(".hands");
+                hands.style.display = "none";
+
+                let contest = document.querySelector(".contest");
+                contest.style.display = "flex";
+
+
+                document.getElementById("userPickImage").src = handOptions[hand];
+
+                pickComputerHand(hand);
+            };
+
+            const pickComputerHand = (hand) => {
+                let hands = ["rock", "paper", "scissors"];
+                let cpHand = hands[Math.floor(Math.random() * hands.length)];
+
+
+                document.getElementById("computerPickImage").src = handOptions[cpHand]
+
+                referee(hand, cpHand);
+            };
+
+            const referee = (userHand, cpHand) => {
+                if (userHand == "paper" && cpHand == "scissors") {
+                    setDecision("YOU LOSE!");
+                }
+                if (userHand == "paper" && cpHand == "rock") {
+                    setDecision("YOU WIN!");
+                    setScore(SCORE + 1);
+                }
+                if (userHand == "paper" && cpHand == "paper") {
+                    setDecision("It's a tie!");
+                }
+                if (userHand == "rock" && cpHand == "scissors") {
+                    setDecision("YOU WIN!");
+                    setScore(SCORE + 1);
+                }
+                if (userHand == "rock" && cpHand == "paper") {
+                    setDecision("YOU LOSE!");
+                }
+                if (userHand == "rock" && cpHand == "rock") {
+                    setDecision("It's a tie!");
+                }
+                if (userHand == "scissors" && cpHand == "scissors") {
+                    setDecision("It's a tie!");
+                }
+                if (userHand == "scissors" && cpHand == "rock") {
+                    setDecision("YOU LOSE!");
+                }
+                if (userHand == "scissors" && cpHand == "paper") {
+                    setDecision("YOU WIN!");
+                    setScore(SCORE + 1);
+                }
+
+                if(SCORE === 10) {
+                    let res = document.getElementById("result")
+                    res.innerHTML = "<h1>Next challenge at: <a href=' https://ctf-hacknight.deta.dev/challenge/invaders'> https://ctf-hacknight.deta.dev/challenge/invaders </a> </h1>"
+                }
+            };
+
+            const restartGame = () => {
+                let contest = document.querySelector(".contest");
+                contest.style.display = "none";
+
+                let hands = document.querySelector(".hands");
+                hands.style.display = "flex";
+            }
+
+            const setDecision = (decision) => {
+                document.querySelector(".decision h1").innerText = decision;
+            }
+
+            const setScore = (newScore) => {
+                SCORE = newScore;
+                document.querySelector(".score h1").innerText = newScore;
+            }
+    </script>
+  </body>
+</html>

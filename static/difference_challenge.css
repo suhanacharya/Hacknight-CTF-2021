@@ -1,0 +1,261 @@
+/* * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: rgb(24, 21, 21);
+}
+
+.main-title {
+    text-align: center;
+    font-size: 2em;
+    color: black;
+    background-color: yellowgreen;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    display: block;
+    text-decoration: none;
+}
+
+h2 {
+    color: yellowgreen;
+    margin-top: 20px;
+    text-align: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.main-cont {
+    text-align: center;
+}
+
+.img-sec {
+    display: flex;
+    margin-top: 40px;
+    justify-content: space-evenly;
+}
+
+.img-sec img {
+    height: 400px;
+    width: 300px;
+}
+
+input[type="checkbox"] {
+    margin: 15px 8px;
+}
+
+p {
+    color: white;
+    font-family:'Courier New', Courier, monospace;
+    font-size: 1rem;
+    text-align: center;
+    margin-top: 10px;
+}
+
+form {
+    justify-content: space-evenly;
+    font-size: 20px;
+    color: rgb(27, 192, 27);
+    margin-top: 40px;
+}
+
+.submit {
+    margin-top: 30px;
+    width: 200px;
+    height: 50px;
+    color: white;
+    background-color: black;
+    border: 2px solid rgb(27, 192, 27);
+}
+
+#ans-btn{
+    color: black;
+    font-size: 1.5rem;
+    font-family: 'Courier New', Courier, monospace;
+    letter-spacing: 2px;
+    display: inherit;
+    margin: 20px auto;
+} */
+
+
+
+* {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+#clipboard-icon {
+    height: 32px;
+    width: auto;
+}
+
+#code-snippet {
+    display: flex;
+    justify-items: center;
+    justify-content: center;
+    align-items: center;
+}
+
+#challenge-text {
+    font-size: 2em;
+    font-weight: 800;
+    text-align: center;
+}
+
+#hint-text {
+    font-size: 1em;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+#options {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.img-sec {
+    display: flex;
+    margin-top: 40px;
+    justify-content: space-between;
+}
+
+.option {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.option > input {
+    width: 100%;
+}
+
+.option > label {
+    width: 100%;
+}
+
+.inpBox {
+    font-size: 1.5em;
+    padding: 5px;
+    background-color: #222222;
+    font-family: inherit;
+    color: #CDEE69;
+    border-bottom: solid 2px;
+}
+
+.inpBox:focus {
+    outline: none;
+}
+
+code {
+    font-size: 2em;
+    color: #9CD9F0;
+    background-color: #222222;
+    padding: 20px
+}
+
+#clipboard-button {
+
+    /* padding: 0; */
+    border: none;
+    background: none;
+}
+
+#clipboard-button:focus {
+    outline: none;
+}
+
+#check-button {
+    background-color: #222222;
+    border: solid 2px;
+
+}
+
+#result {
+    padding-top: 20px;
+    font-size: xx-large;
+}
+
+
+body {
+    color: #CDEE69;
+    padding: 5%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    justify-items: center;
+    /* height: 50vh; */
+    /* width: "100%"; */
+    background-color: #222222;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+
+    /* justify-content: space-around; */
+    /* align-items: center; */
+}
+
+input {
+    margin: 20px;
+    width: 100%;
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 140px;
+    background-color: #444;
+    color: #E09690;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 150%;
+    left: 50%;
+    margin-left: -75px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-family: inherit;
+}
+
+.tooltip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+@media only screen and (max-width: 500px) {
+    .tooltip {
+        display: none;
+    }
+
+}
+
+#encoded-text {
+    word-wrap: normal;
+}

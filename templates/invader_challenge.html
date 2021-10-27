@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!-- <title>Space Shooter</title> -->
+        <title>CTF - Hacknight</title>
+        <link rel="icon" type="image/svg" href="{{ url_for('static', path='/src/img/loading.svg')}}" />
+
+
+    </head>
+
+    <body>
+        <h1 id="challenge-text">Space Invader</h1>
+        <p id="hint-text">Use arrow keys and space bar to navigate and shoot</p>
+        <style>
+            * {
+                font-family: 'Courier New', Courier, monospace;
+            }
+
+            body {
+                width: 100%;
+                overflow: hidden;
+                /* background: url("{{ url_for('static', path='/src/challenge/space-city.jpg') }}"); */
+                background-color: #222222;
+                background-size: cover;
+            }
+
+            #challenge-text {
+                font-weight: 800;
+                font-size: 3em;
+                text-align: center;
+                color: #CDEE69;
+            }
+
+            #hint-text {
+                font-size: 2em;
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                color: #CDEE69;
+            }
+
+
+            .text {
+                text-align: center;
+                color: white;
+                font-weight: 800;
+                font-size: 2em;
+            }
+
+            #board {
+                position: relative;
+                width: 500px;
+                height: 500px;
+                margin: 40px auto;
+                border: 2px solid white;
+                /* background: url("{{ url_for('static', path='/src/challenge/space1.jpeg') }}"); */
+                overflow: hidden;
+            }
+
+            #jet {
+                position: absolute;
+                width: 50px;
+                height: 50px;
+                background: url("{{url_for('static', path='/src/challenge/rocket.png') }}");
+                background-size: contain;
+                background-repeat: no-repeat;
+                left: 50%;
+                bottom: 0px;
+            }
+
+            .bullets {
+                position: absolute;
+                bottom: 40px;
+                left: 51%;
+                width: 20px;
+                height: 20px;
+                background: url("{{ url_for('static', path='/src/challenge/bullet.png') }}");
+                background-size: contain;
+                background-repeat: no-repeat;
+            }
+
+            .rocks {
+                position: absolute;
+                top: 0px;
+                width: 40px;
+                height: 40px;
+                background: url("{{ url_for('static', path='/src/challenge/alien.png') }}");
+                background-size: contain;
+                background-repeat: no-repeat;
+            }
+
+            #points {
+                position: absolute;
+                top: 45px;
+                margin-left: 10px;
+                /* opacity: 0.7; */
+                font-size: 5em;
+                color: white;
+            }
+
+            .point {
+                position: absolute;
+                top: 0px;
+                margin: 10px;
+                /* opacity: 0.7; */
+                font-size: 2em;
+                color: white;
+            }
+        </style>
+        <div id="board">
+            <div class="rocks"></div>
+            <div id="jet"></div>
+        </div>
+        <p class="point">Points
+        <div id="points">0</div>
+        <!-- <div id=""></div> -->
+        </p>
+        <!-- <script src="script.js" defer></script> -->
+
+        <div id="result">
+
+        </div>
+
+        <script>
+            var jet = document.getElementById("jet");
+            var board = document.getElementById("board");
+
+            window.addEventListener("keydown", (e) => {
+                var left = parseInt(window.getComputedStyle(jet).getPropertyValue("left"));
+                if (e.key == "ArrowLeft" && left > 0) {
+                    jet.style.left = left - 10 + "px";
+                }
+                //460  =>  board width - jet width
+                else if (e.key == "ArrowRight" && left <= 460) {
+                    jet.style.left = left + 10 + "px";
+                }
+
+                if (e.key == "ArrowUp" || e.keyCode == 32) {
+                    //32 is for space key
+                    var bullet = document.createElement("div");
+                    bullet.classList.add("bullets");
+                    board.appendChild(bullet);
+
+                    var movebullet = setInterval(() => {
+                        var rocks = document.getElementsByClassName("rocks");
+
+                        for (var i = 0; i < rocks.length; i++) {
+                            var rock = rocks[i];
+                            if (rock != undefined) {
+                                var rockbound = rock.getBoundingClientRect();
+                                var bulletbound = bullet.getBoundingClientRect();
+
+                                //Condition to check whether the rock/alien and the bullet are at the same position..!
+                                //If so,then we have to destroy that rock
+
+                                if (
+                                    bulletbound.left >= rockbound.left &&
+                                    bulletbound.right <= rockbound.right &&
+                                    bulletbound.top <= rockbound.top &&
+                                    bulletbound.bottom <= rockbound.bottom
+                                ) {
+                                    rock.parentElement.removeChild(rock); //Just removing that particular rock;
+                                    //Scoreboard
+                                    document.getElementById("points").innerHTML =
+                                        (parseInt(document.getElementById("points").innerHTML) + 5) + "/500";
+                                }
+                            }
+                        }
+                        var bulletbottom = parseInt(
+                            window.getComputedStyle(bullet).getPropertyValue("bottom")
+                        );
+
+                        //Stops the bullet from moving outside the gamebox
+                        if (bulletbottom >= 500) {
+                            clearInterval(movebullet);
+                        }
+
+                        bullet.style.left = left + "px"; //bullet should always be placed at the top of my jet..!
+                        bullet.style.bottom = bulletbottom + 3 + "px";
+                    });
+                }
+            });
+            var generaterocks = setInterval(() => {
+                var rock = document.createElement("div");
+                rock.classList.add("rocks");
+                //Just getting the left of the rock to place it in random position...
+                var rockleft = parseInt(
+                    window.getComputedStyle(rock).getPropertyValue("left")
+                );
+                //generate value between 0 to 450 where 450 => board width - rock width
+                rock.style.left = Math.floor(Math.random() * 450) + "px";
+
+                board.appendChild(rock);
+            }, 3000);
+
+            var moverocks = setInterval(() => {
+                var rocks = document.getElementsByClassName("rocks");
+
+                if (rocks != undefined) {
+                    for (var i = 0; i < rocks.length; i++) {
+                        //Now I have to increase the top of each rock,so that the rocks can move downwards..
+                        var rock = rocks[i]; //getting each rock
+                        var rocktop = parseInt(
+                            window.getComputedStyle(rock).getPropertyValue("top")
+                        );
+                        //475 => boardheight - rockheight + 25
+                        if (rocktop >= 475) {
+                            alert("Game Over");
+                            clearInterval(moverocks);
+                            window.location.reload();
+                        }
+
+                        rock.style.top = rocktop + 25 + "px";
+                    }
+                }
+            }, 450);
+
+            let gameLoop = setInterval(() => {
+                let points = document.getElementById("points");
+                if (parseInt(points.innerText) == 500) {
+                    clearInterval(moverocks)
+                    clearInterval(generaterocks)
+
+                    let res = document.getElementById("result");
+
+                    fetch("https://ctf-hacknight.deta.dev/get/flag").then(res => res.json()).then(data => {
+                        res.innerHTML = `<div id='challenge-text'>Congrats! You did it! Here is your ${data["flag"]}!`
+                    })
+
+                    clearInterval(gameLoop);
+
+                    
+                }
+            }, 100)
+        </script>
+    </body>
+
+</html>

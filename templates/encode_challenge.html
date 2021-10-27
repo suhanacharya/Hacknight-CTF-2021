@@ -1,0 +1,83 @@
+<html>
+
+    <head>
+        <title>CTF - Hacknight</title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <!-- <title></title> -->
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="{{ url_for('static', path='/encode_challenge.css') }}">
+        <link rel="icon" type="image/svg" href="{{ url_for('static', path='/src/img/loading.svg')}}" />
+
+
+
+        <style>
+            #hint-img {
+                width: 400;
+                height: auto;
+                display: none;
+            }
+        </style>
+    </head>
+
+
+    <body>
+        <script>
+            const submitData = () => {
+                let inpText = document.getElementById("next-hint")
+
+                let hintImg = document.getElementById("hint-img")
+                hintImg.src = inpText.value
+                hintImg.style.display = "block"
+            }
+
+            const copyToClip = () => {
+                var copyText = document.getElementById("encoded-text");
+                navigator.clipboard.writeText(copyText.innerHTML);
+                var tooltip = document.getElementById("myTooltip");
+                tooltip.innerHTML = "Copied to clipboard";
+            }
+
+            const copiedToClip = () => {
+                var tooltip = document.getElementById("myTooltip");
+                tooltip.innerHTML = "Copy to clipboard";
+            }
+
+        </script>
+
+        <p id="challenge-text">This level is all about Character Encodings</p>
+        <p id="hint-text">
+            <span>(hello)<sub>utf-8</sub> is (aGVsbG8=)<sub>b64</sub></span>
+            <span>(hello)<sub>utf-16</sub> is (AGgAZQBsAGwAbw==)<sub>b64</sub></span>
+            <span>
+                (Open Source <3)<sub>utf-8</sub> is (T3BlbiBTb3VyY2UgPDM=)<sub>b64</sub>
+            </span>
+        </p>
+
+        <p> Can you decode this? </p>
+        <p> You'll get a link to the next hint: </p>
+        <code>(<span id="encoded-text">aHR0cHM6Ly9jdGYtaGFja25pZ2h0LmRldGEuZGV2L2dldC9lbmNvZGVk</span>)<sub>64</sub> <div class="tooltip">
+            <button id="clipboard-button" onclick="copyToClip()" onmouseout="copiedToClip()">
+                <span class="tooltiptext" id="myTooltip">Copy to clipboard</span>
+                <img id="clipboard-icon" src="{{ url_for('static', path='./src/vectors/clipboards.png')}}">
+            </button>
+        </div></code>
+
+        <p>But wait, that's not the end, what's this text file? I'd say copy and paste the content in this input box </p>
+
+
+        <input class="inpBox" type="text" id="next-hint">
+        <button class="inpBox" onclick="submitData()">
+            Submit
+        </button>
+
+        <img id="hint-img" src="" alt="">
+
+
+        <footer>
+
+        </footer>
+    </body>
+
+</html>

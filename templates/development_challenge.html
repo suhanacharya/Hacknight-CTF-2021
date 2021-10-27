@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>CTF - Hacknight</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', path='/development_challenge.css') }}">
+    <link rel="icon" type="image/svg" href="{{ url_for('static', path='/src/img/loading.svg')}}" />
+
+    
+</head>
+
+<body>
+    <h2>Riddles</h2>
+
+    <div class="main-cont">
+        <p id="challenge-text">
+            "I’m sent before I’m ready, I’ll break before you know it and you can’t find me many places. What am I?"
+        </p>
+
+
+        <div id="form">
+            <input class="inpBox" type="text" name="answer" id="tsk1-ans" required="" placeholder="Enter your answer">
+            <br>
+            <button class="inpBox" onclick="showResult()">Submit</button>
+        </div>
+
+        <h3 id="hint-text"><strong>Hint: </strong>Its related to product deployment</h3>
+
+        <div id="ans-slot">
+            <img id="loading" src="{{ url_for('static', path='/src/img/loading.svg' )}}" alt="loading">
+            
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        function showResult() {
+            const val = document.getElementById('tsk1-ans').value;
+
+            let loading = document.getElementById("loading");
+            loading.style.display = 'block';
+
+            fetch(`https://ctf-hacknight.deta.dev/check/dev/?msg=${val}`).then(res => res.json()).then(data => {
+                if(data["res"]) {
+                    let ansSlot = document.getElementById("ans-slot")
+                    ansSlot.innerHTML = `<h2>POG! POG! Next challenge at: <a href="${data["res"]}"> ${data["res"]}</h2> </a>`
+                }
+                else {
+                    let ansSlot = document.getElementById("ans-slot")
+                    ansSlot.innerHTML = `<h2>${data["data"]}</h2>`
+                }
+            })
+
+        }
+    </script>
+</body>
+
+</html>

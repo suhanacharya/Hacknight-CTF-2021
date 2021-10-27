@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{{ url_for('static', path='/home.css') }}">
+        <link rel="icon" type="image/svg" href="{{ url_for('static', path='/src/img/loading.svg')}}" />
+
+        <title>CTF - Hacknight</title>
+    </head>
+
+    <body>
+        <!-- <a class="main-title" href="./lvl1-home.html">Welcome to CTF </a> -->
+            <div id="challenge-text" >Hacknight CTF</div>
+            <p id="hint-text">
+                Is this your first CTF? Ask your mentor for help :) This Capture The Flag competition is Suuuuper Basic level, since you are beginners. It's like a super Fancy fill in the blanks form.
+            </p>
+            <p id="challenge-text" >Link for your first hunt!! : <a href="https://ctf-hacknight.deta.dev/challenge/dev" target="_blank">Click here</a></p>
+
+            <div id="form">
+                <input type="text" name="flag" placeholder="Enter discord username (without #)" id="username" class="inpBox" required="">
+                <input type="text" name="flag" placeholder="Enter Flag" id="flag" class="inpBox" required="">
+                <button class="inpBox" onclick="submit()">Submit</button>
+            </div>
+
+            <div id="result">
+
+            </div>
+
+        <script>
+            const submit = () => {
+                let flag = document.getElementById("flag").value;
+                let username = document.getElementById("username").value;
+
+                fetch(`https://ctf-hacknight.deta.dev/verify/flag?username=${username}&flag=${flag}`).then(data => data.json()).then(data => {
+                    if(data["res"]) {
+                        let res = document.getElementById("result");
+                        res.innerHTML = "<h1>SUCCESSSSSSSSSSS</h1>"
+                    }
+                    else {
+                        let res = document.getElementById("result");
+                        res.innerHTML = "<h1>NOOOOOOOOOOOOOO</h1>"
+                    }
+                })
+            }
+        </script>
+
+    </body>
+
+</html>
